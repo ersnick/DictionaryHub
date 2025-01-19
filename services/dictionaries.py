@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 class DictionaryService:
     def __init__(self):
         self.repository = DictionaryRepository()
-        self.UPLOAD_DIR = Path("uploads")
+        self.UPLOAD_DIR = Path("uploads/dictionaries")
         self.UPLOAD_DIR.mkdir(exist_ok=True)
 
     async def create_dictionary(self, db: AsyncSession, name: str, lang_chain: str, description: str, file: UploadFile):

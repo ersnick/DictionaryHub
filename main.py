@@ -1,4 +1,6 @@
 from api import dictionaries as dictionaries_api
+from api import auth as auth_api
+from api import users as users_api
 from models import dictionaries
 from db import database
 from fastapi import FastAPI
@@ -8,6 +10,8 @@ app = FastAPI()
 
 # Подключение маршрутов
 app.include_router(dictionaries_api.router)
+app.include_router(auth_api.router)
+app.include_router(users_api.router)
 
 
 # Асинхронная функция для инициализации базы данных

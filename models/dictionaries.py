@@ -16,3 +16,6 @@ class Dictionary(BaseModel):
     description = Column(Text, nullable=True)
     rating = Column(Float, nullable=True)
     path = Column(String(255), nullable=False)
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+
+    owner = relationship("User", back_populates="dictionaries")
