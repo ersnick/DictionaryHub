@@ -9,7 +9,7 @@ from schemas.users import UserCreate, UserResponse
 from services.users import UserService
 from core.config import settings
 
-router = APIRouter(prefix="/auth")
+router = APIRouter(prefix="/auth", tags=["Auth"])
 user_service = UserService()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 

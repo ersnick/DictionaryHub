@@ -7,6 +7,7 @@ from db.database import get_db
 from services.dictionaries import DictionaryService
 from pathlib import Path
 from fastapi.responses import FileResponse
+from core.auth import get_current_user
 
 
 logging.basicConfig(
@@ -14,7 +15,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/dictionaries")
+router = APIRouter(prefix="/dictionaries", tags=["Dictionaries"])
 dictionary_service = DictionaryService()
 
 
@@ -24,10 +25,20 @@ async def create_dictionary(
     name: str = Form(...),
     lang_chain: str = Form(...),
     description: str = Form(...),
+    is_private: bool = Form(...),
     db: AsyncSession = Depends(get_db),
+    current_user: dict = Depends(get_current_user)
 ):
     try:
-        dictionary = await dictionary_service.create_dictionary(db, name, lang_chain, description, file)
+        dictionary = await dictionary_service.create_dictionary(
+            db,
+            name,
+            lang_chain,
+            description,
+            file,
+            is_private,
+            current_user['sub']
+        )
         return JSONResponse(
             content={
                 "id": dictionary.id,
@@ -48,6 +59,16 @@ async def get_all_dictionaries(db: AsyncSession = Depends(get_db)):
         return dictionaries
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.get("/{username}")
+async def get_all_users_dictionaries(username: str, db: AsyncSession = Depends(get_db)):
+    try:
+        dictionaries = await dictionary_service.get_all_users_dictionaries(db, username)
+        return dictionaries
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 
 @router.get("/{dictionary_id}")

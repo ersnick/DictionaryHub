@@ -17,3 +17,9 @@ class UserResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
+
+class UserPublicData(BaseModel):
+    fullname: str | None
+    username: str | None
+    bio: str | None

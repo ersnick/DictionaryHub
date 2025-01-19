@@ -57,3 +57,19 @@ class UserRepository:
             return user
         except SQLAlchemyError as e:
             raise Exception(f"Error updating user data: {e}")
+
+    async def get_public_user_data(self, db: AsyncSession, username):
+        """Возвращает публичные данные пользователя"""
+        try:
+            user = await self.get_user_by_username(db, username)
+            return user.fullname, user.username, user.bio
+        except SQLAlchemyError as e:
+            raise Exception(f"Error retrieving user by username: {e}")
+
+    async def get_user_photo(self, db: AsyncSession, username):
+        """Возвращает путь до фото пользователя"""
+        try:
+            user = await self.get_user_by_username(db, username)
+            return user.photo_path
+        except SQLAlchemyError as e:
+            raise Exception(f"Error retrieving user by username: {e}")

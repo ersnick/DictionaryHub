@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, Numeric, ForeignKey, DECIMAL, DateTime, Float
+from sqlalchemy import Column, Integer, String, Text, Numeric, ForeignKey, DECIMAL, DateTime, Float, Boolean
 from datetime import datetime
 
 from sqlalchemy.orm import relationship
@@ -16,6 +16,7 @@ class Dictionary(BaseModel):
     description = Column(Text, nullable=True)
     rating = Column(Float, nullable=True)
     path = Column(String(255), nullable=False)
+    is_private = Column(Boolean, nullable=False)
     owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     owner = relationship("User", back_populates="dictionaries")
