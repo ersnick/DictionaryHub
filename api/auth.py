@@ -30,13 +30,6 @@ async def refresh_token(refresh_token: str):
         raise HTTPException(status_code=401, detail="Invalid refresh token")
 
 
-@router.post("/register", response_model=UserResponse)
-async def register_user(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
-    """Эндпоинт для регистрации нового пользователя"""
-    created_user = await user_service.register_user(db, user_data)
-    return created_user
-
-
 @router.post("/token", response_model=dict)
 async def login(
         form_data: OAuth2PasswordRequestForm = Depends(),
