@@ -73,6 +73,7 @@ class DictionaryService:
                 # Создаем экземпляр DictionaryView
                 dictionary_view = DictionaryView(
                     id=dictionary.id,
+                    name=dictionary.name,
                     lang_chain=dictionary.lang_chain,
                     description=dictionary.description,
                     rating=dictionary.rating,
