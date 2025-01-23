@@ -15,6 +15,14 @@ class UserRepository:
         except SQLAlchemyError as e:
             raise Exception(f"Error retrieving user by username: {e}")
 
+    async def get_user_by_id(self, db: AsyncSession, id: int) -> User | None:
+        """Ищет пользователя по имени пользователя"""
+        try:
+            result = await db.execute(select(User).filter(User.id == id))
+            return result.scalars().first()
+        except SQLAlchemyError as e:
+            raise Exception(f"Error retrieving user by username: {e}")
+
     async def get_user_by_mail(self, db: AsyncSession, email: str) -> User | None:
         """Ищет пользователя по электронной почте"""
         try:

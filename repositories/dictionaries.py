@@ -6,7 +6,7 @@ from models.dictionaries import Dictionary  # Импортируй свою мо
 
 
 class DictionaryRepository:
-    async def get_all_dictionaries(self, db: AsyncSession):
+    async def get_public_dictionaries(self, db: AsyncSession):
         """Получить все записи из таблицы dictionaries."""
         try:
             query = select(Dictionary).where(Dictionary.is_private == False)

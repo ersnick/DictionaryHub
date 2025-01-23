@@ -8,6 +8,7 @@ from pathlib import Path
 
 from repositories.dictionaries import DictionaryRepository
 from repositories.users import UserRepository
+from schemas.dictionaries import DictionaryView
 
 logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
@@ -61,12 +62,28 @@ class DictionaryService:
         except Exception as e:
             raise Exception(f"Error saving dictionary: {e}")
 
-    async def get_all_dictionaries(self, db: AsyncSession):
+    async def get_public_dictionaries(self, db: AsyncSession):
         """
-        Возвращает список всех словарей.
+        Возвращает список всех публичных словарей.
         """
         try:
-            return await self.dictionaryRepository.get_all_dictionaries(db)
+            dictionaries = await self.dictionaryRepository.get_public_dictionaries(db)
+            dictionaries_view = []  # Инициализируем список для хранения результатов
+            for dictionary in dictionaries:
+                # Создаем экземпляр DictionaryView
+                dictionary_view = DictionaryView(
+                    id=dictionary.id,
+                    lang_chain=dictionary.lang_chain,
+                    description=dictionary.description,
+                    rating=dictionary.rating,
+                )
+                # Получаем владельца
+                owner = await self.userRepository.get_user_by_id(db, int(dictionary.owner_id))
+                dictionary_view['owner'] = owner.username
+
+                # Добавляем в список
+                dictionaries_view.append(dictionary_view)
+            return dictionaries_view
         except Exception as e:
             raise Exception(f"Error retrieving dictionaries: {e}")
 

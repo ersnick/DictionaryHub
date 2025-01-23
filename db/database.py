@@ -5,7 +5,7 @@ from core.config import settings
 
 
 # Подключение к базе данных PostgreSQL
-engine = create_async_engine(settings.DATABASE_URL, future=True, echo=True)
+engine = create_async_engine(settings.DATABASE_URL, future=True, echo=False)
 Base = declarative_base()
 
 # Асинхронная сессия

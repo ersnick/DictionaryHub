@@ -53,22 +53,21 @@ async def create_dictionary(
 
 
 @router.get("/")
-async def get_all_dictionaries(db: AsyncSession = Depends(get_db)):
+async def get_public_dictionaries(db: AsyncSession = Depends(get_db)):
     try:
-        dictionaries = await dictionary_service.get_all_dictionaries(db)
+        dictionaries = await dictionary_service.get_public_dictionaries(db)
         return dictionaries
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/{username}")
+@router.get("/user/{username}")
 async def get_all_users_dictionaries(username: str, db: AsyncSession = Depends(get_db)):
     try:
         dictionaries = await dictionary_service.get_all_users_dictionaries(db, username)
         return dictionaries
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-
 
 
 @router.get("/{dictionary_id}")
